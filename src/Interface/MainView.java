@@ -33,7 +33,8 @@ public class MainView extends javax.swing.JFrame {
         CorrectForm = new CorreccionView(this);
         DetectForm = new DeteccionView(this);
         Deteccion.setIcon(new ImageIcon(CargarImagenes.class.getResource("DetectIcon.png")));
-        Correccion.setIcon(new ImageIcon(CargarImagenes.class.getResource("CorrectIcon.png")));
+        Correccion.setIcon(new ImageIcon(CargarImagenes.class.getResource("CorrectIcon.png"))); 
+        this.setIconImage(new ImageIcon(CargarImagenes.class.getResource("ICON.png")).getImage());
         String[] Letters= {" " ,"." ,"," ,";" ,":" ,"A" ,"B" ,"C" ,"D" ,"E" ,"F" ,"G" ,"H" ,"I" ,"J" ,"K" ,"L" ,"M" ,"N" ,"Ñ"  ,"O" ,"P" ,"Q" ,"R" ,"S" ,"T" ,"U" ,"V" ,"W" ,"X" ,"Y" ,"Z" ,"a" ,"b" ,"c" ,"d"  ,"e"  ,"f"  ,"g"  ,"h"  ,"i"  ,"j"  ,"k"  ,"l"  ,"m"  ,"n"  ,"ñ"  ,"o"  ,"p"  ,"q"  ,"r"  ,"s"  ,"t"  ,"u"  ,"v"  ,"w"  ,"x"  ,"y"  ,"z" ,};
         String[] asciiVec={"32","46","44","59","58","65","66","67","68","69","70","71","72","73","74","75","76","77","78","165","79","80","81","82","83","84","85","86","87","88","89","90","97","98","99","100","101","102","103","104","105","106","107","108","109","110","164","111","112","113","114","115","116","117","118","119","120","121","122"};
         int k=0;
@@ -59,10 +60,13 @@ public class MainView extends javax.swing.JFrame {
         Deteccion = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(700, 350));
         setMinimumSize(new java.awt.Dimension(700, 350));
+        setType(java.awt.Window.Type.POPUP);
 
         jLabel1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel1.setText("Metodos de \"Correccion\" y \"Deteccion\" de errores");
@@ -105,6 +109,10 @@ public class MainView extends javax.swing.JFrame {
         jLabel4.setText("Steven Iglesias");
         jLabel4.setToolTipText("");
 
+        jLabel5.setText("Martin Galvis");
+
+        jLabel6.setText("Luis Garcia");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -115,12 +123,6 @@ public class MainView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(Deteccion)
                 .addGap(104, 104, 104))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -130,6 +132,21 @@ public class MainView extends javax.swing.JFrame {
                         .addGap(167, 167, 167)
                         .addComponent(jLabel1)))
                 .addContainerGap(174, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(625, Short.MAX_VALUE)
+                        .addComponent(jLabel3))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel4)))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -142,10 +159,14 @@ public class MainView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Deteccion)
                     .addComponent(Correccion))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 151, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 113, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
+                .addComponent(jLabel5)
+                .addGap(4, 4, 4)
+                .addComponent(jLabel6)
                 .addContainerGap())
         );
 
@@ -171,5 +192,7 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     // End of variables declaration//GEN-END:variables
 }

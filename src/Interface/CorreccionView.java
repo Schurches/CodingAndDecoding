@@ -19,6 +19,7 @@ import java.util.regex.Pattern;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -40,6 +41,11 @@ public class CorreccionView extends javax.swing.JFrame {
         this.previousView=previousView;
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         BotonAtras.setIcon(new ImageIcon(CargarImagenes.class.getResource("BackIcon.png")));
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Files TXT CRC","txt","ham");
+        this.setIconImage(new ImageIcon(CargarImagenes.class.getResource("ICON.png")).getImage());
+        jFileChooser1.setFileFilter(filter);
+        jFileChooser1.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        jFileChooser1.setMultiSelectionEnabled(false);
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
     }
 
@@ -53,44 +59,49 @@ public class CorreccionView extends javax.swing.JFrame {
     private void initComponents() {
 
         jFileChooser1 = new javax.swing.JFileChooser();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         BotonAtras = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
         routeLabel = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
         stateLabel = new javax.swing.JLabel();
         codifyCheckbox = new javax.swing.JCheckBox();
         decodeCheckbox = new javax.swing.JCheckBox();
+        jLabel5 = new javax.swing.JLabel();
 
         jFileChooser1.setDialogTitle("");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(700, 350));
         setMinimumSize(new java.awt.Dimension(700, 350));
+        setPreferredSize(new java.awt.Dimension(700, 350));
         setType(java.awt.Window.Type.POPUP);
-
-        jLabel4.setText("Steven Iglesias");
-        jLabel4.setToolTipText("");
-
-        jLabel3.setText("Jonathan ilias");
 
         jLabel2.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel2.setText("Correccion de Errores");
 
-        BotonAtras.setText("Atras");
+        BotonAtras.setBorder(null);
+        BotonAtras.setContentAreaFilled(false);
+        BotonAtras.setDebugGraphicsOptions(javax.swing.DebugGraphics.BUFFERED_OPTION);
+        BotonAtras.setFocusPainted(false);
+        BotonAtras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotonAtrasActionPerformed(evt);
+            }
+        });
 
-        jButton1.setText("Buscar archivo");
+        jButton1.setText("Abrir Archivo");
+        jButton1.setDebugGraphicsOptions(javax.swing.DebugGraphics.BUFFERED_OPTION);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
-        jLabel5.setText("ruta");
+        routeLabel.setText("------------Url-------------");
 
-        jButton3.setText("Corregir");
+        jButton3.setText("Aceptar");
+        jButton3.setDebugGraphicsOptions(javax.swing.DebugGraphics.BUFFERED_OPTION);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -118,72 +129,63 @@ public class CorreccionView extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setText("Codificar/Decodificar");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(BotonAtras)
-                        .addGap(186, 186, 186)
-                        .addComponent(jLabel2)
-                        .addGap(255, 255, 255))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addContainerGap())))
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
+                .addComponent(stateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton3)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(codifyCheckbox)
-                            .addComponent(decodeCheckbox))
-                        .addGap(142, 142, 142)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(BotonAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(187, 187, 187)
+                        .addComponent(jLabel2))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addComponent(routeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 506, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jLabel3)
-                    .addComponent(stateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jButton1)
+                            .addComponent(jLabel5))
+                        .addGap(32, 32, 32)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(decodeCheckbox)
+                            .addComponent(codifyCheckbox)
+                            .addComponent(routeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 482, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(0, 77, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(BotonAtras)))
+                        .addComponent(jLabel2)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(87, 87, 87)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(routeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(68, 68, 68))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(codifyCheckbox)
+                        .addComponent(BotonAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(decodeCheckbox)
-                        .addGap(84, 84, 84)))
-                .addComponent(stateLabel)
-                .addGap(14, 14, 14)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(routeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(codifyCheckbox)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(decodeCheckbox))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(35, 35, 35)
+                                .addComponent(jLabel5)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel3))
+                    .addComponent(stateLabel)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -226,6 +228,11 @@ public class CorreccionView extends javax.swing.JFrame {
             codifyCheckbox.setSelected(false);
         }
     }//GEN-LAST:event_decodeCheckboxItemStateChanged
+
+    private void BotonAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonAtrasActionPerformed
+        previousView.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_BotonAtrasActionPerformed
 
     public void codificarASCII(){
         try{
@@ -388,8 +395,6 @@ public class CorreccionView extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel routeLabel;
     private javax.swing.JLabel stateLabel;
