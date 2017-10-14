@@ -5,8 +5,20 @@
  */
 package Interface;
 
+import Imagenes.CargarImagenes;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.regex.Pattern;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -14,6 +26,12 @@ import java.awt.Toolkit;
  */
 public class CorreccionView extends javax.swing.JFrame {
     MainView previousView;
+    public String inputFileRoute;
+    public String outputFileRoute;
+    public String outputFileName;
+    public String fileName;
+    public File archivo_de_datos;
+    public boolean CodificadoAlready = false;
     /**
      * Creates new form DeteccionView
      */
@@ -21,6 +39,7 @@ public class CorreccionView extends javax.swing.JFrame {
         initComponents();
         this.previousView=previousView;
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        BotonAtras.setIcon(new ImageIcon(CargarImagenes.class.getResource("BackIcon.png")));
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
     }
 
@@ -37,7 +56,14 @@ public class CorreccionView extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        BotonAtras = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        routeLabel = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
+        stateLabel = new javax.swing.JLabel();
+        codifyCheckbox = new javax.swing.JCheckBox();
+        decodeCheckbox = new javax.swing.JCheckBox();
 
         jFileChooser1.setDialogTitle("");
 
@@ -53,49 +79,319 @@ public class CorreccionView extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel2.setText("Correccion de Errores");
 
-        jButton2.setText("Atras");
+        BotonAtras.setText("Atras");
+
+        jButton1.setText("Buscar archivo");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("ruta");
+
+        jButton3.setText("Corregir");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        stateLabel.setText("*");
+
+        codifyCheckbox.setText("Codificar");
+        codifyCheckbox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                codifyCheckboxItemStateChanged(evt);
+            }
+        });
+        codifyCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                codifyCheckboxActionPerformed(evt);
+            }
+        });
+
+        decodeCheckbox.setText("Decodificar");
+        decodeCheckbox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                decodeCheckboxItemStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton2)
+                        .addComponent(BotonAtras)
                         .addGap(186, 186, 186)
                         .addComponent(jLabel2)
                         .addGap(255, 255, 255))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addComponent(jLabel4)
                         .addContainerGap())))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(codifyCheckbox)
+                            .addComponent(decodeCheckbox))
+                        .addGap(142, 142, 142)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(routeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 506, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel3)
+                    .addComponent(stateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(BotonAtras)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(87, 87, 87)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(routeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(68, 68, 68))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(codifyCheckbox)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(decodeCheckbox)
+                        .addGap(84, 84, 84)))
+                .addComponent(stateLabel)
+                .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jButton2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 269, Short.MAX_VALUE)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel3))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        openFileDialog();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        if(fileName!=null){
+            if(codifyCheckbox.isSelected() && !CodificadoAlready){
+                codificarASCII();
+            }else if(decodeCheckbox.isSelected()){
+                correjirErrores();
+            }
+        }else{
+            stateLabel.setForeground(Color.RED);
+            stateLabel.setText("Debe agregar un archivo de chequeo!");
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void codifyCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codifyCheckboxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_codifyCheckboxActionPerformed
+
+    private void codifyCheckboxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_codifyCheckboxItemStateChanged
+        // TODO add your handling code here:
+        if(decodeCheckbox.isSelected()){
+            decodeCheckbox.setSelected(false);
+        }
+    }//GEN-LAST:event_codifyCheckboxItemStateChanged
+
+    private void decodeCheckboxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_decodeCheckboxItemStateChanged
+        // TODO add your handling code here:
+        if(codifyCheckbox.isSelected()){
+            codifyCheckbox.setSelected(false);
+        }
+    }//GEN-LAST:event_decodeCheckboxItemStateChanged
+
+    public void codificarASCII(){
+        try{
+            FileReader archivo = new FileReader(archivo_de_datos);
+            BufferedReader lector = new BufferedReader(archivo);
+            String cadena = lector.readLine();
+            ArrayList<String> codewords = new ArrayList<String>();
+            while(cadena != null){
+                String codeword = generateCodeword(cadena);
+                codewords.add(codeword);
+                cadena = lector.readLine();
+            }
+            lector.close();
+            archivo.close();
+            String nombre = outputFileRoute+fileName.substring(0,(fileName.length()-4));
+            FileWriter archivo_escritura = new FileWriter(new File(nombre+".ham"));
+            BufferedWriter escritor = new BufferedWriter(archivo_escritura);
+            int tam = codewords.size();
+            for (int i = 0; i < tam; i++) {
+                escritor.write(codewords.get(i)+"\n");
+            }
+            escritor.close();
+            archivo_escritura.close();
+            stateLabel.setForeground(Color.GREEN);
+            stateLabel.setText("Operacion realizada con exito!");
+            CodificadoAlready = true;
+        }catch(Exception e){
+            e.printStackTrace();
+            stateLabel.setForeground(Color.RED);
+            stateLabel.setText("Operacion fallo!");
+        }
+        
+    
+    }
+    
+    public String generateCodeword(String dataword){
+        int[] datawords = toBinaryArray(dataword);
+        //b12  b11  b10 b9 b8 b7 b6 b5 b4 b3 b2 b1 
+        // a8  a7  a6   a5 e8 a4 a3 a2 e4 a1 e2 e1
+        // 0   1   2    3  -  4  5  6  -  7  -  -
+        String b1 = ""+((datawords[7]+datawords[6]+datawords[4]+datawords[3]+datawords[1])%2);
+        String b2 = ""+((datawords[7]+datawords[5]+datawords[4]+datawords[2]+datawords[1])%2);
+        String b4 = ""+((datawords[6]+datawords[5]+datawords[4]+datawords[0])%2);
+        String b8 = ""+((datawords[3]+datawords[2]+datawords[1]+datawords[0])%2);
+        String codeword = datawords[0]+""+datawords[1]+""+datawords[2]+""+datawords[3]+""+b8+
+                ""+datawords[4]+""+datawords[5]+""+datawords[6]+""+b4+
+                ""+datawords[7]+""+b2+""+b1;
+        return codeword;
+    }
+    
+    public void correjirErrores(){
+        try{
+            FileReader archivo_lectura = new FileReader(archivo_de_datos);
+            BufferedReader lector = new BufferedReader(archivo_lectura);
+            String cadena = lector.readLine();
+            ArrayList<String> codewords_corregidos = new ArrayList<String>();
+            while(cadena != null){
+                String correccion = hammingDecode(cadena);
+                codewords_corregidos.add(correccion);
+                cadena = lector.readLine();
+            }
+            lector.close();
+            archivo_lectura.close();
+            String nombre = fileName.substring(0,(fileName.length()-4))+"CORREGIDO";
+            File archivo_correccion = new File(outputFileRoute+nombre+".ham");
+            FileWriter archivo_escritura = new FileWriter(archivo_correccion);
+            BufferedWriter escritor = new BufferedWriter(archivo_escritura);
+            int tam = codewords_corregidos.size();
+            for (int i = 0; i < tam; i++) {
+                escritor.write(codewords_corregidos.get(i)+"\n");
+            }
+            escritor.close();
+            archivo_escritura.close();
+            stateLabel.setForeground(Color.GREEN);
+            stateLabel.setText("Operacion realizada con exito!");
+        }catch(Exception e){
+            e.printStackTrace();
+            stateLabel.setForeground(Color.RED);
+            stateLabel.setText("Operacion fallo!");
+        }    
+    }
+    
+    public int[] toBinaryArray(String cadena){
+        int tam = cadena.length();
+        int[] binaryArray = new int[tam];
+        for (int i = 0; i < tam; i++) {
+            binaryArray[i] = Integer.parseInt(cadena.substring(i,i+1));
+        }
+        return binaryArray;
+    }
+    
+    public String hammingDecode(String cadena){
+        int[] ascii_code = toBinaryArray(cadena);
+        int C1, C2, C4,C8;
+        //b12  b11  b10  b9 b8 b7 b6 b5 b4 b3 b2 b1 
+        // a8  a7   a6   a5 e8 a4 a3 a2 e4 a1 e2 e1
+        // 0   1    2    3  4  5  6  7  8  9  10 11
+        //Bit corrector 1
+        C1 = (ascii_code[11]+ascii_code[9]+ascii_code[7]+ascii_code[5]+ascii_code[3]+ascii_code[1])%2;
+        //Bit corrector 2
+        C2 = (ascii_code[10]+ascii_code[9]+ascii_code[6]+ascii_code[5]+ascii_code[2]+ascii_code[1])%2;
+        //Bit corrector 4
+        C4 = (ascii_code[8]+ascii_code[7]+ascii_code[6]+ascii_code[5]+ascii_code[0])%2;
+        //Bit corrector 8
+        C8 = (ascii_code[4]+ascii_code[3]+ascii_code[2]+ascii_code[1]+ascii_code[0])%2;
+        String indice = ""+C8+C4+C2+C1;
+        int tam,index,posError;
+        tam = ascii_code.length;
+        //Bit errado
+        index = Integer.parseInt(indice.toString(),2);
+        posError = tam-index;
+        if(index != 0){
+            //Bit errado - 1 = indice de correccion (va de 0 a 6 si los bit van de 1 a 7)
+            if(ascii_code[posError] == 0){
+                ascii_code[posError] = 1;
+            }else{
+                ascii_code[posError] = 0;
+            }
+        }
+
+        String codewordCorregido = "";
+        for (int i = 0; i < tam; i++) {
+            codewordCorregido+=""+ascii_code[i];
+        }
+        return codewordCorregido;
+    }
+    
+    public int funcionXOR(int a, int b){
+        if(a==b){
+            return 0;
+        }else{
+            return 1;
+        }
+    }
+    
+    
+    public void openFileDialog(){
+        JFileChooser fc = new JFileChooser();
+        int answer = fc.showOpenDialog(this);
+        if (answer == JFileChooser.APPROVE_OPTION) {
+            archivo_de_datos = fc.getSelectedFile();
+            inputFileRoute = archivo_de_datos.getPath();
+            routeLabel.setText(inputFileRoute);
+            fileName = archivo_de_datos.getName();
+            outputFileRoute = archivo_de_datos.getParent()+"\\";
+        } else {
+            if(inputFileRoute == null){
+                routeLabel.setText("Elija un archivo");
+            }
+        }
+    }
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton BotonAtras;
+    private javax.swing.JCheckBox codifyCheckbox;
+    private javax.swing.JCheckBox decodeCheckbox;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton3;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel routeLabel;
+    private javax.swing.JLabel stateLabel;
     // End of variables declaration//GEN-END:variables
 }

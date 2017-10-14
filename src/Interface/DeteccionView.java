@@ -59,8 +59,7 @@ public class DeteccionView extends javax.swing.JFrame {
         BotonAtras.setIcon(new ImageIcon(CargarImagenes.class.getResource("BackIcon.png")));
         inputFile=null;
         polinomioCorrecto=false;
-       polinomioGenerador=null;
-       TextBoxPolinomio.setEnabled(false);
+        polinomioGenerador=null;
     }
 
     /**
@@ -92,6 +91,8 @@ public class DeteccionView extends javax.swing.JFrame {
         labelErrorMessage = new javax.swing.JLabel();
         TextBoxPolinomio = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        labelTextoSalida = new javax.swing.JLabel();
+        textboxSalida = new javax.swing.JTextField();
 
         FilePicker.setDialogTitle("");
 
@@ -166,6 +167,14 @@ public class DeteccionView extends javax.swing.JFrame {
 
         jLabel1.setText("Polinomio Generador:");
 
+        labelTextoSalida.setText("Nombre del archivo de salida:");
+
+        textboxSalida.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                textboxSalidaKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -174,42 +183,38 @@ public class DeteccionView extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addComponent(BotonAbrirArchivo)
+                        .addGap(18, 18, 18)
+                        .addComponent(LabelUrlSelectedFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel5)
-                            .addComponent(BotonAbrirArchivo))
-                        .addGap(24, 24, 24)
+                            .addComponent(labelErrorMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(LabelUrlSelectedFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(181, 181, 181))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(CheckCodificar)
-                                    .addComponent(CheckDecodificar))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(labelErrorMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)))
+                                .addComponent(BotonAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(193, 193, 193)
+                                .addComponent(jLabel2))
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(24, 24, 24)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(BotonAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(193, 193, 193)
-                                        .addComponent(jLabel2))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(302, 302, 302)
-                                        .addComponent(jLabel1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(TextBoxPolinomio, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 95, Short.MAX_VALUE)))
-                        .addContainerGap())))
+                                    .addComponent(CheckCodificar)
+                                    .addComponent(CheckDecodificar))
+                                .addGap(66, 66, 66)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labelTextoSalida)
+                                    .addComponent(jLabel1)
+                                    .addComponent(textboxSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(TextBoxPolinomio, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 223, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -220,36 +225,40 @@ public class DeteccionView extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addComponent(jLabel2)))
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(BotonAbrirArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(LabelUrlSelectedFile))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(46, 46, 46)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(BotonAbrirArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(LabelUrlSelectedFile))
+                        .addGap(24, 24, 24)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(43, 43, 43)
                                 .addComponent(CheckCodificar)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(CheckDecodificar))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(60, 60, 60)
+                                .addGap(17, 17, 17)
                                 .addComponent(jLabel5)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(labelTextoSalida)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(textboxSalida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(TextBoxPolinomio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(labelErrorMessage))
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(TextBoxPolinomio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
-                        .addGap(130, 130, 130))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(labelErrorMessage))
+                .addContainerGap())
         );
 
         pack();
@@ -276,7 +285,6 @@ public class DeteccionView extends javax.swing.JFrame {
         }else{
             CheckDecodificar.setEnabled(true);    
         }
-        TextBoxPolinomio.setEnabled(false);
     }//GEN-LAST:event_CheckCodificarActionPerformed
     private void CheckDecodificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckDecodificarActionPerformed
         labelErrorMessage.setForeground(Color.BLACK);
@@ -308,7 +316,6 @@ public class DeteccionView extends javax.swing.JFrame {
                     if(CheckCodificar.isSelected()){                          
                         if (polinomioCorrecto) {
                             //Obtener el polinomio Generador ingresado
-                            TextBoxPolinomio.setEnabled(false);
                             String Gdx=TextBoxPolinomio.getText();
                             polinomioGenerador= new int[Gdx.length()];
                             for (int i = 0; i < Gdx.length(); i++) {
@@ -357,6 +364,10 @@ public class DeteccionView extends javax.swing.JFrame {
             labelErrorMessage.setText("*");
         } 
     }//GEN-LAST:event_TextBoxPolinomioKeyReleased
+
+    private void textboxSalidaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textboxSalidaKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textboxSalidaKeyReleased
 
 static int operationXor(int a, int b) {
         if(a == b) {
@@ -520,7 +531,7 @@ private void Codificar(String[] codeWords){
     ignoreOne=false;
     for (String codeWord : codeWords) {
         if(ignoreOne){
-            codeWord = codeWord.substring(0,codeWord.length()-polinomioGenerador.length-1);
+            codeWord = codeWord.substring(0,codeWord.length()-(polinomioGenerador.length-1));
             for(int i =0;i<codeWord.length(); i=i+8){
                 String BinaryWord="";
                 if(i+8>=codeWord.length()){
@@ -575,6 +586,8 @@ private boolean isCorrect(String dataS) {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel labelErrorMessage;
+    private javax.swing.JLabel labelTextoSalida;
+    private javax.swing.JTextField textboxSalida;
     // End of variables declaration//GEN-END:variables
 }
 
