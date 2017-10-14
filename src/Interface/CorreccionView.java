@@ -33,6 +33,7 @@ public class CorreccionView extends javax.swing.JFrame {
     public String fileName;
     public File archivo_de_datos;
     public boolean CodificadoAlready = false;
+    int correjidos = 0;
     /**
      * Creates new form DeteccionView
      */
@@ -235,14 +236,27 @@ public class CorreccionView extends javax.swing.JFrame {
     }//GEN-LAST:event_BotonAtrasActionPerformed
 
     public void codificarASCII(){
+        String caracter = "";
         try{
             FileReader archivo = new FileReader(archivo_de_datos);
             BufferedReader lector = new BufferedReader(archivo);
             String cadena = lector.readLine();
             ArrayList<String> codewords = new ArrayList<String>();
             while(cadena != null){
-                String codeword = generateCodeword(cadena);
-                codewords.add(codeword);
+                int tam = cadena.length();
+                for (int i = 0; i < tam; i++) {
+                    caracter = cadena.substring(i,i+1);
+                    int ascii = Integer.parseInt(previousView.charAsciiHashMap.get(caracter));
+                    String asciiBinaryValue = Integer.toString(ascii,2);
+                    int longitud = asciiBinaryValue.length();
+                    if(longitud < 8){
+                        for (int j = 0; j < 8-longitud; j++) {
+                            asciiBinaryValue = "0"+asciiBinaryValue;
+                        }
+                    }
+                    String codeword = generateCodeword(asciiBinaryValue);
+                    codewords.add(codeword);
+                }
                 cadena = lector.readLine();
             }
             lector.close();
@@ -260,9 +274,15 @@ public class CorreccionView extends javax.swing.JFrame {
             stateLabel.setText("Operacion realizada con exito!");
             CodificadoAlready = true;
         }catch(Exception e){
-            e.printStackTrace();
             stateLabel.setForeground(Color.RED);
-            stateLabel.setText("Operacion fallo!");
+            if(!fileName.substring(fileName.length()-4).equalsIgnoreCase(".txt")){
+                stateLabel.setText("Debe seleccionar un archivo .txt!");
+            }else if(!caracter.matches("[a-zA-Z,;:\\s]")){
+                stateLabel.setText("No se admite este caracter: "+caracter+". Solo (letras , : ; espacio)");
+            }else{
+                e.printStackTrace();
+                stateLabel.setText("Operacion Fallo!");
+            }
         }
         
     
@@ -284,10 +304,11 @@ public class CorreccionView extends javax.swing.JFrame {
     }
     
     public void correjirErrores(){
+        String cadena = "";
         try{
             FileReader archivo_lectura = new FileReader(archivo_de_datos);
             BufferedReader lector = new BufferedReader(archivo_lectura);
-            String cadena = lector.readLine();
+            cadena = lector.readLine();
             ArrayList<String> codewords_corregidos = new ArrayList<String>();
             while(cadena != null){
                 String correccion = hammingDecode(cadena);
@@ -307,12 +328,23 @@ public class CorreccionView extends javax.swing.JFrame {
             escritor.close();
             archivo_escritura.close();
             stateLabel.setForeground(Color.GREEN);
-            stateLabel.setText("Operacion realizada con exito!");
+            if(correjidos!=0){
+                stateLabel.setText("Operacion realizada con exito! Codewords correjidos: "+correjidos);
+            }else{
+                stateLabel.setText("Operacion realizada con exito!");
+            }
         }catch(Exception e){
-            e.printStackTrace();
             stateLabel.setForeground(Color.RED);
-            stateLabel.setText("Operacion fallo!");
-        }    
+            if(!fileName.substring(fileName.length()-4).equalsIgnoreCase(".ham")){
+                stateLabel.setText("Debe seleccionar un archivo .ham!");
+            }else if(!Pattern.matches("[01]*", cadena)){
+                stateLabel.setText("El archivo solo debe contener cadenas de 1's y 0's!");
+            }else{
+                e.printStackTrace();
+                stateLabel.setText("Operacion fallo!");
+            }
+        }
+        correjidos = 0;
     }
     
     public int[] toBinaryArray(String cadena){
@@ -344,15 +376,15 @@ public class CorreccionView extends javax.swing.JFrame {
         //Bit errado
         index = Integer.parseInt(indice.toString(),2);
         posError = tam-index;
-        if(index != 0){
+        if(index != 0 && index<13){ // index < 13 es por si hay error de 2 bit, entonces puede arrojar posicion > 12
             //Bit errado - 1 = indice de correccion (va de 0 a 6 si los bit van de 1 a 7)
             if(ascii_code[posError] == 0){
                 ascii_code[posError] = 1;
             }else{
                 ascii_code[posError] = 0;
             }
+            correjidos++;
         }
-
         String codewordCorregido = "";
         for (int i = 0; i < tam; i++) {
             codewordCorregido+=""+ascii_code[i];
